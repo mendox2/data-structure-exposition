@@ -10,15 +10,19 @@ print("DEMOSTRACION: MATRICES DENSAS VS DISPERSAS (CSR)")
 print("DATASET REAL: MOVIELENS")
 print("---------------------------------------------------------")
 
-#* Se verifica que el archivo exista
+#* Rutas de los equipos
+rutaIsaak = r"C:\Users\USER\OneDrive\Escritorio\data-structure-exposition\Codigo ejemplo\ratings.csv"
+rutaSebastian = r"C:\Users\ACER\Desktop\data-structure-exposition\Codigo ejemplo\ratings.csv"
 
 try:
-    #* Ruta del pc local de Sebastián (mendox2)
-    datos = pd.read_csv("C:\\Users\\ACER\\Desktop\\data-structure-exposition\\Codigo ejemplo\\ratings.csv")
+    datos = pd.read_csv(rutaIsaak)
 except FileNotFoundError:
-    print("ERROR: No se encontro el archivo ratings.csv.")
-    print("Se esperaba en el path")
-    print("Verifica que la ruta sea correcta.")
+        print(f"Se esperaba en: {rutaIsaak}")
+        print(f"o en: {rutaSebastian}")
+        print("Verifica que la ruta sea correcta.")
+        sys.exit(1)
+except Exception as e:
+    print(f"ERROR: No se pudo abrir el archivo ratings.csv: {e}")
     sys.exit(1)
 
 columnasNecesarias = {"userId", "movieId", "rating"}
