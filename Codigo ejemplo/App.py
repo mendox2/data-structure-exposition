@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
+from pathlib import Path #agregue esto, revisar
 
 #TODO: Se mejoró el routing (entre el App y el ratings) falta cambiar el archivo csv
 #TODO: Y cambiar las condiciones de "columnasNecesarias" (Variable linea 23)
@@ -154,3 +155,130 @@ print(
 print("---------------------------------------------------------")
 print("PROCESO FINALIZADO")
 print("---------------------------------------------------------")
+
+# Apartir de aqui se agrega la parte para que routes funcione y quede como el proyecto principal
+# REVISAR
+
+# ---------------------------------------------------------
+# DEMOSTRACION ADICIONAL: RED DE RUTAS AEREAS
+# PARTE 1: CARGA Y LIMPIEZA DEL DATASET
+# ---------------------------------------------------------
+
+print("\n")
+print("=========================================================")
+print("DEMOSTRACION: RED DE RUTAS AEREAS (OPENFLIGHTS)")
+print("=========================================================")
+
+nombresOpenFlights = [
+    "airline",
+    "airline_id",
+    "source_airport",
+    "source_airport_id",
+    "destination_airport",
+    "destination_airport_id",
+    "codeshare",
+    "stops",
+    "equipment"
+]
+
+# Se carga el archivo de rutas
+try:
+    datosRutas = pd.read_csv(
+        rutaRutas,
+        na_values=["\\N"]
+    )
+
+    # Se normalizan los nombres de las columnas
+    columnasNormalizadas = {
+        str(col).strip().lower().replace("_", " ").replace("-", " "): col
+        for col in datosRutas.columns
+    }
+
+    # Se buscan las columnas de origen y destino
+    opcionesOrigen = (
+        "source airport id",
+        "source id"
+    )
+
+    opcionesDestino = (
+        "destination airport id",
+        "dest airport id",
+        "destination id",
+        "dest id"
+    )
+
+    colOrigen = next(
+        (columnasNormalizadas[c] for c in opcionesOrigen
+         if c in columnasNormalizadas),
+        None
+    )
+
+    colDestino = next(
+        (columnasNormalizadas[c] for c in opcionesDestino
+         if c in columnasNormalizadas),
+        None
+    )
+
+    # Si no hay encabezados, se usa el formato original
+    # de OpenFlights, que tiene nueve campos sin encabezado
+    if colOrigen is None or colDestino is None:
+        datosRutas = pd.read_csv(
+            rutaRutas,
+            header=None,
+            names=nombresOpenFlights,
+            na_values=["\\N"]
+        )
+
+        colOrigen = "source_airport_id"
+        colDestino = "destination_airport_id"
+
+except FileNotFoundError:
+    print(f"ERROR: No se encontró el archivo: {rutaRutas}")
+    sys.exit(1)
+
+except Exception as e:
+    print(f"ERROR al cargar las rutas aéreas: {e}")
+    sys.exit(1)
+
+
+# Se extraen los identificadores de los aeropuertos
+rutasValidas = datosRutas[
+    [colOrigen, colDestino]
+].copy()
+
+rutasValidas.columns = ["origen", "destino"]
+
+# Se convierten los identificadores a valores numéricos
+rutasValidas["origen"] = pd.to_numeric(
+    rutasValidas["origen"], errors="coerce"
+)
+
+rutasValidas["destino"] = pd.to_numeric(
+    rutasValidas["destino"], errors="coerce"
+)
+
+# Se eliminan registros incompletos
+rutasValidas = rutasValidas.dropna(
+    subset=["origen", "destino"]
+).copy()
+
+# Se conservan identificadores enteros válidos
+rutasValidas = rutasValidas[
+    (rutasValidas["origen"] % 1 == 0) &
+    (rutasValidas["destino"] % 1 == 0)
+].copy()
+
+rutasValidas["origen"] = rutasValidas["origen"].astype(np.int64)
+rutasValidas["destino"] = rutasValidas["destino"].astype(np.int64)
+
+# Se eliminan conexiones duplicadas entre aeropuertos
+rutasValidas = rutasValidas.drop_duplicates(
+    subset=["origen", "destino"]
+)
+
+if rutasValidas.empty:
+    print("ERROR: No se encontraron rutas aéreas válidas.")
+    sys.exit(1)
+
+print("\nDATASET DE RUTAS CARGADO CORRECTAMENTE")
+print(f"Conexiones únicas: {len(rutasValidas):,}")
