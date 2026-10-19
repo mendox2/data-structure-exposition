@@ -16,10 +16,10 @@ Se requiere para su ejecución (en vs code)
 - py -m pip install numpy scipy sys
 ### Usar una extensión para correr el código más cómodamente (recomendada):
 - Python debugger / Microsoft
-![Correr el debugger](ExplainExtension.jpeg)
+![Correr el debugger](Readme/ExplainExtension.jpeg)
 ### Usar una extensión para ver los comentarios en colores como en etapa de desarrollo (recomendada):
 - Better comments / Aaron Bond
-![Mostrar comentarios con colores](ExplainCommentColours.jpeg)
+![Mostrar comentarios con colores](Readme/ExplainCommentColours.jpeg)
 
 """bash
 py ".\Codigo ejemplo\App.py"
