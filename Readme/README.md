@@ -12,12 +12,12 @@ En primera instancia se investigó individualmente el tema, posteriormente se re
 
 ## Ejecución 
 Se requiere para su ejecución (en vs code)
-Escribir el siguiente comando en la terminal (en vs code dentro de la carpeta del proyecto):
+### Escribir el siguiente comando en la terminal (en vs code dentro de la carpeta del proyecto):
 - py -m pip install numpy scipy sys
-Usar una extensión para correr el código más cómodamente (recomendada):
+### Usar una extensión para correr el código más cómodamente (recomendada):
 - Python debugger / Microsoft
 ![Correr el debugger](ExplainExtension.jpeg)
-Usar una extensión para ver los comentarios en colores como en etapa de desarrollo (recomendada):
+### Usar una extensión para ver los comentarios en colores como en etapa de desarrollo (recomendada):
 - Better comments / Aaron Bond
 ![Mostrar comentarios con colores](ExplainCommentColours.jpeg)
 
