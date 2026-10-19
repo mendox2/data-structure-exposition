@@ -3,22 +3,17 @@ import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
 
-#! PRIMERA VERSIÓN DE LA FASE FINAL, BAJO REVISIÓN
+#TODO: Se mejoró el routing (entre el App y el ratings) falta cambiar el archivo csv
+#TODO: Y cambiar las condiciones de "columnasNecesarias" (Variable linea 23)
 
 print("---------------------------------------------------------")
 print("DEMOSTRACION: MATRICES DENSAS VS DISPERSAS (CSR)")
 print("DATASET REAL: MOVIELENS")
 print("---------------------------------------------------------")
 
-#* Rutas de los equipos
-rutaIsaak = r"C:\Users\USER\OneDrive\Escritorio\data-structure-exposition\Codigo ejemplo\ratings.csv"
-rutaSebastian = r"C:\Users\ACER\Desktop\data-structure-exposition\Codigo ejemplo\ratings.csv"
-
 try:
-    datos = pd.read_csv(rutaIsaak)
+    datos = pd.read_csv("Codigo ejemplo/ratings.csv")
 except FileNotFoundError:
-        print(f"Se esperaba en: {rutaIsaak}")
-        print(f"o en: {rutaSebastian}")
         print("Verifica que la ruta sea correcta.")
         sys.exit(1)
 except Exception as e:
