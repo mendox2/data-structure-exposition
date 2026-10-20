@@ -33,9 +33,9 @@ py ".\Codigo ejemplo\Vuelos\App.py"
 
 ## Resultados:
 ### Para Uso de memoria:
-=========================================================
-Matriz dispersa de rutas aéreas desde CSV (OpenFlights)
-=========================================================
+- =========================================================
+- Matriz dispersa de rutas aéreas desde CSV (OpenFlights)
+- =========================================================
 
 - Listo, se cargaron las rutas.
 - Conexiones únicas: 37,274
